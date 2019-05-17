@@ -65,6 +65,7 @@
             this.Position1PicBox.Size = new System.Drawing.Size(165, 165);
             this.Position1PicBox.TabIndex = 0;
             this.Position1PicBox.TabStop = false;
+            this.Position1PicBox.Click += new System.EventHandler(this.Position1PicBox_Click);
             // 
             // Position2PicBox
             // 
@@ -74,6 +75,7 @@
             this.Position2PicBox.Size = new System.Drawing.Size(165, 165);
             this.Position2PicBox.TabIndex = 1;
             this.Position2PicBox.TabStop = false;
+            this.Position2PicBox.Click += new System.EventHandler(this.Position2PicBox_Click);
             // 
             // Position3PicBox
             // 
@@ -83,6 +85,7 @@
             this.Position3PicBox.Size = new System.Drawing.Size(165, 165);
             this.Position3PicBox.TabIndex = 2;
             this.Position3PicBox.TabStop = false;
+            this.Position3PicBox.Click += new System.EventHandler(this.Position3PicBox_Click);
             // 
             // Position6PicBox
             // 
@@ -92,6 +95,7 @@
             this.Position6PicBox.Size = new System.Drawing.Size(165, 165);
             this.Position6PicBox.TabIndex = 3;
             this.Position6PicBox.TabStop = false;
+            this.Position6PicBox.Click += new System.EventHandler(this.Position6PicBox_Click);
             // 
             // Position5PicBox
             // 
@@ -101,6 +105,7 @@
             this.Position5PicBox.Size = new System.Drawing.Size(165, 165);
             this.Position5PicBox.TabIndex = 4;
             this.Position5PicBox.TabStop = false;
+            this.Position5PicBox.Click += new System.EventHandler(this.Position5PicBox_Click);
             // 
             // Position4PicBox
             // 
@@ -110,6 +115,7 @@
             this.Position4PicBox.Size = new System.Drawing.Size(165, 165);
             this.Position4PicBox.TabIndex = 5;
             this.Position4PicBox.TabStop = false;
+            this.Position4PicBox.Click += new System.EventHandler(this.Position4PicBox_Click);
             // 
             // Position9PicBox
             // 
@@ -119,6 +125,7 @@
             this.Position9PicBox.Size = new System.Drawing.Size(165, 165);
             this.Position9PicBox.TabIndex = 6;
             this.Position9PicBox.TabStop = false;
+            this.Position9PicBox.Click += new System.EventHandler(this.Position9PicBox_Click);
             // 
             // Position8PicBox
             // 
@@ -128,16 +135,17 @@
             this.Position8PicBox.Size = new System.Drawing.Size(165, 165);
             this.Position8PicBox.TabIndex = 7;
             this.Position8PicBox.TabStop = false;
+            this.Position8PicBox.Click += new System.EventHandler(this.Position8PicBox_Click);
             // 
             // Position7PicBox
             // 
             this.Position7PicBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Position7PicBox.Image = global::TicTacToe.Properties.Resources.X;
             this.Position7PicBox.Location = new System.Drawing.Point(0, 323);
             this.Position7PicBox.Name = "Position7PicBox";
             this.Position7PicBox.Size = new System.Drawing.Size(165, 165);
             this.Position7PicBox.TabIndex = 8;
             this.Position7PicBox.TabStop = false;
+            this.Position7PicBox.Click += new System.EventHandler(this.Position7PicBox_Click);
             // 
             // JsonRadioButton
             // 
@@ -149,6 +157,7 @@
             this.JsonRadioButton.TabStop = true;
             this.JsonRadioButton.Text = "JSON";
             this.JsonRadioButton.UseVisualStyleBackColor = true;
+            this.JsonRadioButton.CheckedChanged += new System.EventHandler(this.JsonRadioButton_CheckedChanged);
             // 
             // XmlRadioButton
             // 
@@ -160,6 +169,7 @@
             this.XmlRadioButton.TabStop = true;
             this.XmlRadioButton.Text = "XML";
             this.XmlRadioButton.UseVisualStyleBackColor = true;
+            this.XmlRadioButton.CheckedChanged += new System.EventHandler(this.XmlRadioButton_CheckedChanged);
             // 
             // ExportGroupBox
             // 
@@ -181,6 +191,7 @@
             this.ExportButton.TabIndex = 11;
             this.ExportButton.Text = "Export";
             this.ExportButton.UseVisualStyleBackColor = true;
+            this.ExportButton.Click += new System.EventHandler(this.ExportButton_Click);
             // 
             // TurnLabel
             // 
@@ -200,6 +211,7 @@
             this.PlayerVsBotButton.TabIndex = 13;
             this.PlayerVsBotButton.Text = "Start Player vs Bot";
             this.PlayerVsBotButton.UseVisualStyleBackColor = true;
+            this.PlayerVsBotButton.Click += new System.EventHandler(this.PlayerVsBotButton_Click);
             // 
             // PlayerVsPlayerButton
             // 
@@ -209,8 +221,9 @@
             this.PlayerVsPlayerButton.TabIndex = 14;
             this.PlayerVsPlayerButton.Text = "Start Player vs Player";
             this.PlayerVsPlayerButton.UseVisualStyleBackColor = true;
+            this.PlayerVsPlayerButton.Click += new System.EventHandler(this.PlayerVsPlayerButton_Click);
             // 
-            // Form1
+            // TicTacToe
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -228,7 +241,7 @@
             this.Controls.Add(this.Position3PicBox);
             this.Controls.Add(this.Position2PicBox);
             this.Controls.Add(this.Position1PicBox);
-            this.Name = "Form1";
+            this.Name = "TicTacToe";
             this.Text = "Tic Tac Toe";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.Position1PicBox)).EndInit();

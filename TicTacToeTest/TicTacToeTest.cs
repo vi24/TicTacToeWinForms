@@ -3,12 +3,12 @@ using Xunit;
 
 namespace TicTacToeTest
 {
-    public class UnitTest1
+    public class TicTacToeTest
     {
         [Fact]
-        public void Test1()
+        public void CheckVerticalTest()
         {
-
+            Sign sign = 
         }
     }
 }

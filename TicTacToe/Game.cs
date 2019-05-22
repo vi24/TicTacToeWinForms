@@ -34,11 +34,13 @@ namespace TicTacToe
 
         public void Play(PictureBox pictureBox, int positionX, int positionY)
         {
+            if (_state == null) return;
+
             if (_state.TurnPlayer == Sign.X)
             {
                 _state.Players[0].Play(pictureBox, _state.Map, positionX, positionY);
                 _state.TurnPlayer = Sign.O;
-                if (CheckState(Sign.X))
+                if (_state.CheckState(Sign.X))
                 {
                     MessageBox.Show("You won");
                     _state.GameOver = true;
@@ -49,7 +51,7 @@ namespace TicTacToe
                     Bot bot = (Bot)_state.Players[1];
                     bot.PlayRandom(_state.PictureBoxes, _state.Map);
                     _state.TurnPlayer = Sign.X;
-                    if (CheckState(Sign.O))
+                    if (_state.CheckState(Sign.O))
                     {
                         MessageBox.Show("You lost");
                         _state.GameOver = true;
@@ -62,7 +64,7 @@ namespace TicTacToe
                 _state.Players[1].Play(pictureBox, _state.Map, positionX, positionY);
                 _state.TurnPlayer = Sign.X;
 
-                if (CheckState(Sign.O))
+                if (_state.CheckState(Sign.O))
                 {
                     MessageBox.Show("Player 2 won!");
                     _state.GameOver = true;
@@ -71,9 +73,14 @@ namespace TicTacToe
             }
         }
 
-        public static void ExportState()
+        public void ExportState()
         {
 
+        }
+
+        public void ImportState(State state)
+        {
+            _state = state;
         }
 
         private static Player[] CreatePlayers(bool firstPlayerIsHuman, bool secondPlayerIsHuman)
@@ -87,106 +94,5 @@ namespace TicTacToe
                 return new Player[] { new HumanPlayer(Sign.X), new Bot(Sign.O) };
             }
         }
-
-        private bool CheckHorizontal(Sign x)
-        {
-            int horizontal = 0;
-            for(int i = 0; i < 3; i++)
-            {
-                for(int j = 0; j < 3; i++)
-                {
-                    if(_state.Map[i,j] == x)
-                    {
-                        horizontal++;
-                    }
-                }
-                if(horizontal == 3)
-                {
-                    return true;
-                }
-                else
-                {
-                    horizontal = 0;
-                }
-            }
-            return false;
-        }
-
-        private bool CheckVertical(Sign x)
-        {
-            int vertical = 0;
-            for (int i = 0; i < 3; i++)
-            {
-                for(int j = 0; j < 3; i++)
-                {
-                    if(_state.Map[i,j] == x)
-                    {
-                        vertical++;
-                    }
-                }
-                if(vertical == 3)
-                {
-                    return true;
-                }
-                else
-                {
-                    vertical = 0;
-                }
-            }
-            return false;
-        }
-
-        private bool CheckDiagonals (Sign sign)
-        {
-            bool diagonal = false;
-            for(int i = 0; i < 3; i++)
-            {
-                if (_state.Map[i, i].Equals(sign))
-                {
-                    diagonal = true;
-                }
-                else
-                {
-                    diagonal = false;
-                }
-            }
-            if (diagonal)
-            {
-                return true;
-            }
-            for(int i = 2, j = 0; i <= 0 && j < 3; i--, j++)
-            {
-                if (_state.Map[i, j].Equals(sign))
-                {
-                    diagonal = true;
-                }
-                else
-                {
-                    diagonal = false;
-                }
-            }
-            if (diagonal)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool CheckTopLeftToBottomRightDiagonal(Sign sign)
-        {
-            throw new NotImplementedException();
-        }
-            
-
-        private bool CheckState(Sign sign)
-        {
-            return CheckHorizontal(sign) || CheckVertical(sign) || CheckDiagonals(sign);
-        }
-
-        
-
-
-
     }
 }

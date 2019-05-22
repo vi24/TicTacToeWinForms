@@ -107,7 +107,6 @@ namespace TicTacToe
             {
                 return true;
             }
-
             return false;
         }
 
@@ -121,11 +120,9 @@ namespace TicTacToe
             return (Map[2, 0] == sign) && (Map[1, 1] == sign) && (Map[0, 2] == sign);
         }
 
-
         public bool CheckState(Sign sign)
         {
             return CheckHorizontal(sign) || CheckVertical(sign) || CheckDiagonals(sign);
         }
-
     }
 }

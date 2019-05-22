@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace TicTacToe
 {
-    enum Sign
+    public enum Sign
     {
-        X, O
+        X, O, Nothing
     }
 }

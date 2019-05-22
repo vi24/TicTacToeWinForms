@@ -12,7 +12,7 @@ namespace TicTacToe
 {
     public class HumanPlayer : Player
     {
-        public HumanPlayer(bool x) : base(x)
+        public HumanPlayer(Sign sign) : base(sign)
         { }
     }
 }

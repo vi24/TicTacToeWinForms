@@ -11,23 +11,29 @@ namespace TicTacToe
 {
     public abstract class Player
     {
-        Image Image { get; }
+        private Image _image;
+        private Sign _sign;
 
-        public Player(bool x)
-        {
-            if (x)
+        public Player(Sign sign)
+        { 
+            if (sign == Sign.X)
             {
-                Image = Resources.X;
+                _image = Resources.X;
             }
-            else
+            else if (sign == Sign.O)
             {
-                Image = Resources.O;
+                _image = Resources.O;
+            }
+            if (sign != Sign.Nothing)
+            {
+                _sign = sign;
             }
         }
 
-        public void Play(PictureBox picture)
+        public void Play(PictureBox picture, Sign [,] map, int positionX, int positionY)
         {
-            picture.Image = Image;
+            picture.Image = _image;
+            map[positionX, positionY] = _sign;
         }
 
     }

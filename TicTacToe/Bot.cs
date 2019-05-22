@@ -11,12 +11,33 @@ namespace TicTacToe
 {
     public class Bot: Player
     {
-        public Bot(bool x):base(x)
-        {}
+        private Random _random;
 
-        public void PlayRandom(PictureBox [,] pictures, int randomX, int randomY)
+        public Bot(Sign sign):base(sign)
         {
-            Play(pictures[randomX,randomY]);
+            _random = new Random();
+        }
+
+        public void PlayRandom(PictureBox [,] pictures, Sign [,] map)
+        {
+            int randomX, randomY;
+            List<List<int>> freeSpaces = new List<List<int>>();
+            PictureBox pictureBox = null;
+
+            for (int i = 0; i < map.GetLength(0); i++)
+            {
+                for (int j = 0; j < map.GetLength(1); j++)
+                {
+                    if (map[i, j] == Sign.Nothing)
+                    {
+                        freeSpaces.Add(new List<int>() { i, j });
+                    }
+                }
+            }
+            randomX = freeSpaces[_random.Next(freeSpaces.Count)][0];
+            randomY = freeSpaces[_random.Next(freeSpaces.Count)][1];
+            pictureBox = pictures[randomX, randomY];
+            Play(pictureBox, map, randomX, randomY);
         }
     }
 }

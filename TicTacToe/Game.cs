@@ -9,28 +9,36 @@ namespace TicTacToe
 {
     public class Game
     {
-        private static State _state;
-        private static Random _random = new Random();
+        private static Game _instance = null;
+        private static State _state = null;
 
-        public void InitializeGame(PictureBox[,] pictureBoxes, string[,] map, bool playerX, bool playerY)
+        public static Game Instance
         {
-            Player[] players = CreatePlayers(playerX, playerY);
-            _state = new State(pictureBoxes, players, map, true, false);
+            get
+            {
+                if(_instance == null)
+                {
+                    _instance = new Game();
+                }
+                return _instance;
+            }
         }
 
-        public void Play(PictureBox pictureBox, int x, int y)
+        private Game() {}
+        
+        public void InitializeGame(PictureBox[,] pictureBoxes, Sign[,] map, bool playerX, bool playerY)
         {
-            bool empty = String.IsNullOrEmpty((string)_state.Map[x, y]);
-            if (!empty)
+            Player[] players = CreatePlayers(playerX, playerY);
+            _state = new State(pictureBoxes, players, map, Sign.X, false);
+        }
+
+        public void Play(PictureBox pictureBox, int positionX, int positionY)
+        {
+            if (_state.TurnPlayer == Sign.X)
             {
-                return;
-            }
-            if (_state.TurnPlayerX)
-            {
-                _state.Players[0].Play(pictureBox);
-                _state.Map[x, y] = "X";
-                _state.TurnPlayerX = false;
-                if (CheckState("X"))
+                _state.Players[0].Play(pictureBox, _state.Map, positionX, positionY);
+                _state.TurnPlayer = Sign.O;
+                if (CheckState(Sign.X))
                 {
                     MessageBox.Show("You won");
                     _state.GameOver = true;
@@ -38,18 +46,10 @@ namespace TicTacToe
                 }
                 if (_state.Players[1] is Bot)
                 {
-                    int j = _random.Next(3);
-                    int k = _random.Next(3);
-                    while (!String.IsNullOrEmpty(_state.Map[j, k]))
-                    {
-                        j = _random.Next(3);
-                        k = _random.Next(3);
-                    }
                     Bot bot = (Bot)_state.Players[1];
-                    bot.PlayRandom(_state.PictureBoxes,j,k);
-                    _state.Map[j, k] = "O";
-                    _state.TurnPlayerX = true;
-                    if (CheckState("O"))
+                    bot.PlayRandom(_state.PictureBoxes, _state.Map);
+                    _state.TurnPlayer = Sign.X;
+                    if (CheckState(Sign.O))
                     {
                         MessageBox.Show("You lost");
                         _state.GameOver = true;
@@ -59,10 +59,10 @@ namespace TicTacToe
             }
             else 
             {
-                _state.Players[1].Play(pictureBox);
-                _state.TurnPlayerX = true;
-                _state.Map[x, y] = "O";
-                if (CheckState("O"))
+                _state.Players[1].Play(pictureBox, _state.Map, positionX, positionY);
+                _state.TurnPlayer = Sign.X;
+
+                if (CheckState(Sign.O))
                 {
                     MessageBox.Show("Player 2 won!");
                     _state.GameOver = true;
@@ -76,84 +76,72 @@ namespace TicTacToe
 
         }
 
-        private Player[] CreatePlayers(bool playerXIsHuman, bool playerOIsHuman)
+        private static Player[] CreatePlayers(bool firstPlayerIsHuman, bool secondPlayerIsHuman)
         {
-            return (playerXIsHuman && playerOIsHuman) ? new Player[] { new HumanPlayer(true), new HumanPlayer(false) } : new Player[] { new HumanPlayer(true), new Bot(false) };
+            if (firstPlayerIsHuman && secondPlayerIsHuman)
+            {
+                return new Player[] { new HumanPlayer(Sign.X), new HumanPlayer(Sign.O) };
+            }
+            else
+            {
+                return new Player[] { new HumanPlayer(Sign.X), new Bot(Sign.O) };
+            }
         }
 
-        private bool CheckHorizontal(string sign)
+        private bool CheckHorizontal(Sign x)
         {
-            if(!sign.Equals("X") && !sign.Equals("O"))
-            {
-                return false;
-            }
-
-            bool horizontal = false;
-            int j;
+            int horizontal = 0;
             for(int i = 0; i < 3; i++)
             {
-                j = 0;
-                do
+                for(int j = 0; j < 3; i++)
                 {
-                    if (!String.IsNullOrEmpty((string)_state.Map[i,j]) && _state.Map[i, j].Equals(sign))
+                    if(_state.Map[i,j] == x)
                     {
-                        horizontal = true;
+                        horizontal++;
                     }
-                    else
-                    {
-                        horizontal = false;
-                    }
-                    j++;
-                } while(horizontal && j < 3);
-
-                if (horizontal)
+                }
+                if(horizontal == 3)
                 {
                     return true;
+                }
+                else
+                {
+                    horizontal = 0;
                 }
             }
             return false;
         }
 
-        private bool CheckVertical(string sign)
+        private bool CheckVertical(Sign x)
         {
-            if (!sign.Equals("X") && !sign.Equals("O"))
-            {
-                return false;
-            }
-
-            bool vertical = false;
-            int j;
+            int vertical = 0;
             for (int i = 0; i < 3; i++)
             {
-                j = 0;
-                vertical = false;
-                do
+                for(int j = 0; j < 3; i++)
                 {
-                    if (!String.IsNullOrEmpty((string)_state.Map[j, i]) && _state.Map[j, i].Equals(sign))
+                    if(_state.Map[i,j] == x)
                     {
-                        vertical = true;
+                        vertical++;
                     }
-                    else
-                    {
-                        vertical = false;
-                    }
-                    j++;
-                } while (vertical && j < 3);
-
-                if (vertical)
+                }
+                if(vertical == 3)
                 {
                     return true;
+                }
+                else
+                {
+                    vertical = 0;
                 }
             }
             return false;
         }
 
-        private bool CheckDiagonal(string sign)
+        private bool CheckDiagonals (Sign sign)
         {
             bool diagonal = false;
             for(int i = 0; i < 3; i++)
             {
-                if (!String.IsNullOrEmpty((string)_state.Map[i, i]) && _state.Map[i, i].Equals(sign))
+                if (_state.Map[i, i].Equals(sign))
                 {
                     diagonal = true;
                 }
@@ -168,7 +156,7 @@ namespace TicTacToe
             }
             for(int i = 2, j = 0; i <= 0 && j < 3; i--, j++)
             {
-                if (!String.IsNullOrEmpty((string)_state.Map[i, j]) && _state.Map[i, j].Equals(sign))
+                if (_state.Map[i, j].Equals(sign))
                 {
                     diagonal = true;
                 }
@@ -184,11 +172,16 @@ namespace TicTacToe
 
             return false;
         }
+
+        private bool CheckTopLeftToBottomRightDiagonal(Sign sign)
+        {
+            throw new NotImplementedException();
+        }
             
 
-        private bool CheckState(string sign)
+        private bool CheckState(Sign sign)
         {
-            return CheckHorizontal(sign) || CheckVertical(sign) || CheckDiagonal(sign);
+            return CheckHorizontal(sign) || CheckVertical(sign) || CheckDiagonals(sign);
         }
 
         

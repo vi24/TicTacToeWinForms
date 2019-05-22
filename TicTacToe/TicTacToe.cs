@@ -13,19 +13,23 @@ namespace TicTacToe
     public partial class TicTacToe : Form
     {
         private PictureBox[,] _pictureBoxes;
-        private string[,] _map;
+        private Sign [,] _map;
         private Game _game;
 
         public TicTacToe()
         {
             InitializeComponent();
-            _game = new Game();
+            _game = Game.Instance;
             _pictureBoxes = new PictureBox[3, 3]{
                 { Position1PicBox, Position2PicBox, Position3PicBox },
                 { Position4PicBox, Position5PicBox, Position6PicBox },
                 { Position7PicBox, Position8PicBox, Position9PicBox }
             };
-            _map = new string[3,3];
+            _map = new Sign[3, 3]{
+                { Sign.Nothing, Sign.Nothing, Sign.Nothing},
+                { Sign.Nothing, Sign.Nothing, Sign.Nothing},
+                { Sign.Nothing, Sign.Nothing, Sign.Nothing}
+            };
         }
 
         private void Form1_Load(object sender, EventArgs e)

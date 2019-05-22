@@ -7,18 +7,18 @@ using System.Windows.Forms;
 
 namespace TicTacToe
 {
-    public struct State
+    public class State
     {
-        public bool TurnPlayerX { get; set; }
+        public Sign TurnPlayer { get; set; }
         public bool GameOver { get; set; }
         public PictureBox[,] PictureBoxes { get; }
 
-        public string [,] Map { get; set; }
+        public Sign [,] Map { get; set; }
 
         public Player[] Players { get; }
-        public State(PictureBox[,] pictureBoxes, Player[] players, string [,] map, bool turnPlayerX, bool gameover)
+        public State(PictureBox[,] pictureBoxes, Player[] players, Sign [,] map, Sign sign, bool gameover)
         {
-            TurnPlayerX = turnPlayerX;
+            TurnPlayer = sign;
             GameOver = gameover;
             PictureBoxes = pictureBoxes;
             Players = players;

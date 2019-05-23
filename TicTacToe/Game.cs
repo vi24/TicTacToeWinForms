@@ -5,11 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TicTacToe.Properties;
 
 namespace TicTacToe
 {
     public class Game: INotifyPropertyChanged
     {
+        private static PictureBox[,] _pictureBoxes;
         private static Game _instance = null;
         private static State _state = null;
         private static string _turnText;
@@ -17,7 +19,8 @@ namespace TicTacToe
         private static Player _secondPlayer;
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public event EventHandler BotTurnEvent;
+        private event EventHandler UpdatePictureBoxEvent;
+        private event EventHandler BotTurnEvent;
 
         public string TurnText
         {
@@ -49,18 +52,12 @@ namespace TicTacToe
         public void InitializeGame(PictureBox[,] pictureBoxes, Sign[,] map, bool playerX, bool playerY)
         {
             Player[] players = CreatePlayers(playerX, playerY);
-            _state = new State(pictureBoxes, players, map, players[0], false);
+            _state = new State(players, map, players[0], false);
             BotTurnEvent += new EventHandler(PlayBot);
+            UpdatePictureBoxEvent += new EventHandler(UpdatePictureBoxes);
             _firstPlayer = players[0];
             _secondPlayer = players[1];
-        }
-
-        public void OnBotTurn()
-        {
-            if(BotTurnEvent != null)
-            {
-                BotTurnEvent(this, null);
-            }
+            _pictureBoxes = pictureBoxes;
         }
 
         public void Play(PictureBox pictureBox, int positionX, int positionY)
@@ -69,7 +66,8 @@ namespace TicTacToe
 
             if (IsFirstPlayerTurn())
             {
-                _firstPlayer.Play(pictureBox, _state.Map, positionX, positionY);
+                _firstPlayer.Play(_state.Map, positionX, positionY);
+                OnUpdateMap();
                 if (_state.IsGameOver(Sign.X))
                 {
                     ShowGameOverMessage();
@@ -82,7 +80,8 @@ namespace TicTacToe
             }
             if (IsSecondPlayerTurn() && _secondPlayer is HumanPlayer)
             {
-                _secondPlayer.Play(pictureBox, _state.Map, positionX, positionY);
+                _secondPlayer.Play(_state.Map, positionX, positionY);
+                OnUpdateMap();
                 if (_state.IsGameOver(Sign.O))
                 {
                     ShowGameOverMessage();
@@ -188,15 +187,49 @@ namespace TicTacToe
             }
         }
 
+        private void OnUpdateMap()
+        {
+            if(UpdatePictureBoxEvent != null)
+            {
+                UpdatePictureBoxEvent(this, null);
+            }
+        }
+
+        private void OnBotTurn()
+        {
+            if (BotTurnEvent != null)
+            {
+                BotTurnEvent(this, null);
+            }
+        }
+
+        private void UpdatePictureBoxes(object sender, EventArgs e)
+        {
+            for(int i = 0; i < _state.Map.GetLength(0); i++)
+            {
+                for(int j = 0; j < _state.Map.GetLength(1); j++)
+                {
+                    if(_state.Map[i,j] == Sign.X)
+                    {
+                        _pictureBoxes[i,j].Image = Resources.X;
+                    }
+                    if(_state.Map[i,j] == Sign.O)
+                    {
+                        _pictureBoxes[i, j].Image = Resources.O;
+                    }
+                }
+            }
+        }
+
         private void PlayBot(object sender, EventArgs e)
         {
             if (_state.TurnPlayer is Bot)
             {
                 Bot bot = (Bot)_state.Players[1];
-                bot.PlayRandom(_state.PictureBoxes, _state.Map, _state.GetFreePositions());
+                bot.PlayRandom(_state.Map, _state.GetFreePositions());
+                OnUpdateMap();
                 if (_state.IsGameOver(Sign.O))
                 {
-                    _state.GameOver = true;
                     ShowGameOverMessage();
                     return;
                 }

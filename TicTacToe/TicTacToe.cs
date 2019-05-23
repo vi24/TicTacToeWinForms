@@ -31,7 +31,6 @@ namespace TicTacToe
                 { Sign.Nothing, Sign.Nothing, Sign.Nothing}
             };
             TurnLabel.Text = "Choose Mode!";
-            //TurnLabel.DataBindings.Add(new Binding("Text", _game, "TurnText"));
             _game.PropertyChanged += UpdateTurnLabel;
         }
 

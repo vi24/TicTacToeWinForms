@@ -19,16 +19,14 @@ namespace TicTacToe
             _random = new Random();
         }
 
-        public void PlayRandom(PictureBox [,] pictures, Sign[,] map, List<Position> freePositions)
+        public void PlayRandom(Sign[,] map, List<Position> freePositions)
         {
             int randomX, randomY, index;
-            PictureBox pictureBox = null;
 
             index = _random.Next(freePositions.Count);
             randomX = freePositions[index].PositionX;
             randomY = freePositions[index].PositionY;
-            pictureBox = pictures[randomX, randomY];
-            Play(pictureBox, map, randomX, randomY);
+            Play(map, randomX, randomY);
         }
     }
 }

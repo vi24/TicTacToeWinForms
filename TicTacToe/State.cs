@@ -13,8 +13,6 @@ namespace TicTacToe
         public Player Winner { get; set; }
         public Player TurnPlayer { get; set; }
         public bool GameOver { get; set; }
-        public PictureBox[,] PictureBoxes { get; }
-
         public Sign [,] Map { get; set; }
 
         public Player[] Players { get; }
@@ -25,12 +23,11 @@ namespace TicTacToe
             public int PositionY;
         }
 
-        public State(PictureBox[,] pictureBoxes, Player[] players, Sign [,] map, Player player, bool gameover)
+        public State(Player[] players, Sign [,] map, Player player, bool gameover)
         {
             Winner = null;
             TurnPlayer = player;
             GameOver = gameover;
-            PictureBoxes = pictureBoxes;
             Players = players;
             Map = map;
         }

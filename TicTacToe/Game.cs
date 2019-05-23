@@ -13,6 +13,8 @@ namespace TicTacToe
         private static Game _instance = null;
         private static State _state = null;
         private static string _turnText;
+        private static Player _firstPlayer;
+        private static Player _secondPlayer;
 
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler BotTurnEvent;
@@ -49,6 +51,8 @@ namespace TicTacToe
             Player[] players = CreatePlayers(playerX, playerY);
             _state = new State(pictureBoxes, players, map, players[0], false);
             BotTurnEvent += new EventHandler(PlayBot);
+            _firstPlayer = players[0];
+            _secondPlayer = players[1];
         }
 
         public void OnBotTurn()
@@ -61,40 +65,61 @@ namespace TicTacToe
 
         public void Play(PictureBox pictureBox, int positionX, int positionY)
         {
-            if (_state == null) return;
+            if (_state == null || _state.GameOver) return;
 
             if (IsFirstPlayerTurn())
             {
-                _state.Players[0].Play(pictureBox, _state.Map, positionX, positionY);
-                if (_state.CheckState(Sign.X))
+                _firstPlayer.Play(pictureBox, _state.Map, positionX, positionY);
+                if (_state.IsGameOver(Sign.X))
                 {
-                    _state.GameOver = true;
                     ShowGameOverMessage();
                     return;
                 }
-                _state.TurnPlayer = _state.Players[1];
+                _state.TurnPlayer = _secondPlayer;
                 UpdateTurnLabel();
                 OnBotTurn();
+                return;
             }
-            if (IsSecondPlayerTurn() && _state.Players[1] is HumanPlayer)
+            if (IsSecondPlayerTurn() && _secondPlayer is HumanPlayer)
             {
-                _state.Players[1].Play(pictureBox, _state.Map, positionX, positionY);
-                if (_state.CheckState(Sign.O))
+                _secondPlayer.Play(pictureBox, _state.Map, positionX, positionY);
+                if (_state.IsGameOver(Sign.O))
                 {
-                    _state.GameOver = true;
                     ShowGameOverMessage();
                     return;
                 }
-                _state.TurnPlayer = _state.Players[0];
+                _state.TurnPlayer = _firstPlayer;
                 UpdateTurnLabel();
+                return;
             }
         }
 
+        public void UpdateTurnLabel()
+        {
+            if (IsFirstPlayerTurn() && _secondPlayer is HumanPlayer)
+            {
+                TurnText = "Player 1's Turn!";
+                return;
+            }
+            if (IsFirstPlayerTurn())
+            {
+                TurnText = "Your turn!";
+                return;
+            }
+            if (_state.TurnPlayer is HumanPlayer && IsSecondPlayerTurn())
+            {
+                TurnText = "Player 2's Turn!";
+                return;
+            }
+            TurnText = "Bot's Turn!";
+            return;
+        }
         public void ExportState()
         {
-
+            throw new NotImplementedException();
         }
 
+        #region private methods
         private static Player[] CreatePlayers(bool firstPlayerIsHuman, bool secondPlayerIsHuman)
         {
             if (firstPlayerIsHuman && secondPlayerIsHuman)
@@ -111,56 +136,48 @@ namespace TicTacToe
         {
             if (_state.GameOver == false) return;
 
-            if (IsFirstPlayerTurn() && _state.Players[1] is Bot)
+            if(_state.Winner == null)
             {
-                MessageBox.Show("You won!");
+                MessageBox.Show("Draw!!");
                 return;
             }
-            if (IsFirstPlayerTurn())
-            {
-                MessageBox.Show("Player 1 won!");
-                return;
-            }
-            if (IsSecondPlayerTurn() && _state.Players[1] is HumanPlayer)
-            {
-                MessageBox.Show("Player 2 won!");
-            }
-            if (IsSecondPlayerTurn() && _state.Players[1] is Bot)
-            {
-                MessageBox.Show("Bot won!");
-                return;
-            }
-        }
 
-        public void UpdateTurnLabel()
-        {
-            if (IsFirstPlayerTurn() && _state.Players[1] is HumanPlayer) 
+            if(_secondPlayer is Bot)
             {
-                TurnText = "Player 1's Turn!";
-                return;
+                if(_state.Winner == _firstPlayer)
+                {
+                    MessageBox.Show("You won!");
+                    return;
+                }
+                else
+                {
+                    MessageBox.Show("Bot won!");
+                    return;
+                }
             }
-            if (IsFirstPlayerTurn())
+            else
             {
-                TurnText = "Your turn!";
-                return;
+                if (_state.Winner == _firstPlayer)
+                {
+                    MessageBox.Show("Player 1 won!");
+                    return;
+                }
+                else
+                {
+                    MessageBox.Show("Player 2 won!");
+                    return;
+                }
             }
-            if(_state.TurnPlayer is HumanPlayer && IsSecondPlayerTurn())
-            {
-                TurnText = "Player 2's Turn!";
-                return;
-            }
-            TurnText = "Bot's Turn!";
-            return;
         }
 
         private bool IsFirstPlayerTurn()
         {
-            return _state.Players[0] == _state.TurnPlayer && _state.TurnPlayer is HumanPlayer;
+            return _firstPlayer == _state.TurnPlayer && _state.TurnPlayer is HumanPlayer;
         }
 
         private bool IsSecondPlayerTurn()
         {
-            return _state.Players[1] == _state.TurnPlayer;
+            return _secondPlayer == _state.TurnPlayer;
         }
 
         private void OnPropertyChanged(string propertyName)
@@ -177,15 +194,16 @@ namespace TicTacToe
             {
                 Bot bot = (Bot)_state.Players[1];
                 bot.PlayRandom(_state.PictureBoxes, _state.Map, _state.GetFreePositions());
-                if (_state.CheckState(Sign.O))
+                if (_state.IsGameOver(Sign.O))
                 {
                     _state.GameOver = true;
                     ShowGameOverMessage();
                     return;
                 }
-                _state.TurnPlayer = _state.Players[0];
+                _state.TurnPlayer = _firstPlayer;
                 UpdateTurnLabel();
             }
         }
+        #endregion
     }
 }

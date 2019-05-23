@@ -10,6 +10,7 @@ namespace TicTacToe
 {
     public class State
     {
+        public Player Winner { get; set; }
         public Player TurnPlayer { get; set; }
         public bool GameOver { get; set; }
         public PictureBox[,] PictureBoxes { get; }
@@ -26,6 +27,7 @@ namespace TicTacToe
 
         public State(PictureBox[,] pictureBoxes, Player[] players, Sign [,] map, Player player, bool gameover)
         {
+            Winner = null;
             TurnPlayer = player;
             GameOver = gameover;
             PictureBoxes = pictureBoxes;
@@ -64,7 +66,6 @@ namespace TicTacToe
                     if (Map[i, j] == x)
                     {
                         horizontal++;
-
                     }
                 }
                 if (horizontal == 3)
@@ -118,9 +119,20 @@ namespace TicTacToe
             return (Map[2, 0] == sign) && (Map[1, 1] == sign) && (Map[0, 2] == sign);
         }
 
-        public bool CheckState(Sign sign)
+        public bool IsGameOver(Sign sign)
         {
-            return CheckHorizontal(sign) || CheckVertical(sign) || CheckDiagonals(sign);
+            if(CheckHorizontal(sign) || CheckVertical(sign) || CheckDiagonals(sign))
+            {
+                Winner = TurnPlayer;
+                GameOver = true;
+                return true;
+            }
+            if(GetFreePositions().Count == 0)
+            {
+                GameOver = true;
+                return true;
+            }
+            return false;
         }
     }
 }

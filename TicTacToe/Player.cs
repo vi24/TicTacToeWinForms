@@ -34,9 +34,13 @@ namespace TicTacToe
 
         public void Play(PictureBox picture, Sign [,] map, int positionX, int positionY)
         {
+            if(picture.Image != null)
+            {
+                throw new ArgumentException("This picturebox has already an image inside. Therefore this field is already occupied!");
+            }
             picture.Image = _image;
+            picture.Enabled = false;
             map[positionX, positionY] = _sign;
         }
-
     }
 }

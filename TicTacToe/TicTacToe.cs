@@ -42,47 +42,74 @@ namespace TicTacToe
 
         private void Position1PicBox_Click(object sender, EventArgs e)
         {
-            _game.Play(Position1PicBox, 0, 0);
+            if(Position1PicBox.Image == null)
+            {
+                _game.Play(Position1PicBox, 0, 0);
+            }
         }
 
         private void Position2PicBox_Click(object sender, EventArgs e)
         {
-            _game.Play(Position2PicBox, 0, 1);
+            if(Position2PicBox.Image == null)
+            {
+                _game.Play(Position2PicBox, 0, 1);
+            }
         }
 
         private void Position3PicBox_Click(object sender, EventArgs e)
         {
-            _game.Play(Position3PicBox, 0, 2);
+            if(Position3PicBox.Image == null)
+            {
+                _game.Play(Position3PicBox, 0, 2);
+            }
         }
 
         private void Position4PicBox_Click(object sender, EventArgs e)
         {
-            _game.Play(Position4PicBox, 1, 0);
+            if(Position4PicBox.Image == null)
+            {
+                _game.Play(Position4PicBox, 1, 0);
+            }
         }
 
         private void Position5PicBox_Click(object sender, EventArgs e)
         {
-            _game.Play(Position5PicBox, 1, 1);
+            if(Position5PicBox.Image == null)
+            {
+                _game.Play(Position5PicBox, 1, 1);
+            }
         }
 
         private void Position6PicBox_Click(object sender, EventArgs e)
         {
-            _game.Play(Position6PicBox, 1, 2);
+            if(Position6PicBox.Image == null)
+            {
+                _game.Play(Position6PicBox, 1, 2);
+            }
         }
 
         private void Position7PicBox_Click(object sender, EventArgs e)
         {
-            _game.Play(Position7PicBox, 2, 0);
+            if(Position7PicBox.Image == null)
+            {
+                _game.Play(Position7PicBox, 2, 0);
+            }
         }
 
         private void Position8PicBox_Click(object sender, EventArgs e)
         {
-            _game.Play(Position8PicBox, 2, 1);
+            if(Position8PicBox.Image == null)
+            {
+                _game.Play(Position8PicBox, 2, 1);
+            }
         }
 
         private void Position9PicBox_Click(object sender, EventArgs e)
         {
-            _game.Play(Position9PicBox, 2, 2);
+            if(Position9PicBox.Image == null)
+            {
+                _game.Play(Position9PicBox, 2, 2);
+            }
         }
 
         private void JsonRadioButton_CheckedChanged(object sender, EventArgs e)

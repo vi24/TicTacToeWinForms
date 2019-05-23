@@ -21,11 +21,12 @@ namespace TicTacToe
 
         public void PlayRandom(PictureBox [,] pictures, Sign[,] map, List<Position> freePositions)
         {
-            int randomX, randomY;
+            int randomX, randomY, index;
             PictureBox pictureBox = null;
 
-            randomX = freePositions[_random.Next(freePositions.Count-1)].PositionX;
-            randomY = freePositions[_random.Next(freePositions.Count-1)].PositionY;
+            index = _random.Next(freePositions.Count);
+            randomX = freePositions[index].PositionX;
+            randomY = freePositions[index].PositionY;
             pictureBox = pictures[randomX, randomY];
             Play(pictureBox, map, randomX, randomY);
         }

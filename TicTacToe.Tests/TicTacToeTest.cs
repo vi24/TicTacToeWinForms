@@ -10,22 +10,29 @@ namespace TicTacToe.Tests
     
     public class TicTacToeTest
     {
-        State state = new State(new PictureBox[3, 3], null, null, null, false);
+        State state = new State(null, null, null, false);
         [Fact]
-        public void CheckVertical_ShouldBeTrue()
+        public void CheckVertical_WhenVerticalXAllignment_ShouldBeTrue()
         {
+
+            //arrange
             Sign[,] map = { { Sign.X, Sign.Nothing, Sign.Nothing }, { Sign.X, Sign.Nothing, Sign.Nothing }, { Sign.X, Sign.Nothing, Sign.Nothing } };
             state.Map = map;
+            //act
             bool isVertical = state.CheckVertical(Sign.X);
+            //assert
             Assert.True(isVertical);
         }
 
         [Fact]
-        public void CheckVertical_ShouldBefalse()
+        public void CheckVertical_WhenNoVerticalXAllignment_ShouldBefalse()
         {
+            //arrange
             Sign[,] map = { { Sign.X, Sign.Nothing, Sign.Nothing }, { Sign.X, Sign.Nothing, Sign.Nothing }, { Sign.O, Sign.Nothing, Sign.Nothing } };
             state.Map = map;
+            //act
             bool isVertical = state.CheckVertical(Sign.X);
+            //assert
             Assert.False(isVertical);
         }
 

@@ -13,7 +13,6 @@ namespace TicTacToe
     public partial class TicTacToe : Form
     {
         private PictureBox[,] _pictureBoxes;
-        private Sign [,] _map;
         private Game _game;
 
         public TicTacToe()
@@ -24,11 +23,6 @@ namespace TicTacToe
                 { Position1PicBox, Position2PicBox, Position3PicBox },
                 { Position4PicBox, Position5PicBox, Position6PicBox },
                 { Position7PicBox, Position8PicBox, Position9PicBox }
-            };
-            _map = new Sign[3, 3]{
-                { Sign.Nothing, Sign.Nothing, Sign.Nothing},
-                { Sign.Nothing, Sign.Nothing, Sign.Nothing},
-                { Sign.Nothing, Sign.Nothing, Sign.Nothing}
             };
             TurnLabel.Text = "Choose Mode!";
             _game.PropertyChanged += UpdateTurnLabel;
@@ -43,7 +37,7 @@ namespace TicTacToe
         {
             if(Position1PicBox.Image == null)
             {
-                _game.Play(Position1PicBox, 0, 0);
+                _game.Play(0, 0);
             }
         }
 
@@ -51,7 +45,7 @@ namespace TicTacToe
         {
             if(Position2PicBox.Image == null)
             {
-                _game.Play(Position2PicBox, 0, 1);
+                _game.Play(0, 1);
             }
         }
 
@@ -59,7 +53,7 @@ namespace TicTacToe
         {
             if(Position3PicBox.Image == null)
             {
-                _game.Play(Position3PicBox, 0, 2);
+                _game.Play(0, 2);
             }
         }
 
@@ -67,7 +61,7 @@ namespace TicTacToe
         {
             if(Position4PicBox.Image == null)
             {
-                _game.Play(Position4PicBox, 1, 0);
+                _game.Play(1, 0);
             }
         }
 
@@ -75,7 +69,7 @@ namespace TicTacToe
         {
             if(Position5PicBox.Image == null)
             {
-                _game.Play(Position5PicBox, 1, 1);
+                _game.Play(1, 1);
             }
         }
 
@@ -83,7 +77,7 @@ namespace TicTacToe
         {
             if(Position6PicBox.Image == null)
             {
-                _game.Play(Position6PicBox, 1, 2);
+                _game.Play(1, 2);
             }
         }
 
@@ -91,7 +85,7 @@ namespace TicTacToe
         {
             if(Position7PicBox.Image == null)
             {
-                _game.Play(Position7PicBox, 2, 0);
+                _game.Play(2, 0);
             }
         }
 
@@ -99,7 +93,7 @@ namespace TicTacToe
         {
             if(Position8PicBox.Image == null)
             {
-                _game.Play(Position8PicBox, 2, 1);
+                _game.Play(2, 1);
             }
         }
 
@@ -107,7 +101,7 @@ namespace TicTacToe
         {
             if(Position9PicBox.Image == null)
             {
-                _game.Play(Position9PicBox, 2, 2);
+                _game.Play(2, 2);
             }
         }
 
@@ -128,12 +122,12 @@ namespace TicTacToe
 
         private void PlayerVsBotButton_Click(object sender, EventArgs e)
         {
-            _game.InitializeGame(_pictureBoxes, _map, true, false);
+            _game.InitializeGame(_pictureBoxes, true, false);
         }
 
         private void PlayerVsPlayerButton_Click(object sender, EventArgs e)
         {
-            _game.InitializeGame(_pictureBoxes, _map, true, true);
+            _game.InitializeGame(_pictureBoxes, true, true);
         }
 
         public void UpdateTurnLabel(object sender, PropertyChangedEventArgs e)

@@ -24,8 +24,9 @@ namespace TicTacToe
             int randomX, randomY, index;
 
             index = _random.Next(freePositions.Count);
-            randomX = freePositions[index].PositionX;
-            randomY = freePositions[index].PositionY;
+            var freePosition = freePositions[index];
+            randomX = freePosition.PositionX;
+            randomY = freePosition.PositionY;
             Play(map, randomX, randomY);
         }
     }

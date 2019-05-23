@@ -10,7 +10,7 @@ namespace TicTacToe.Tests
     
     public class TicTacToeTest
     {
-        State state = new State(new PictureBox[3, 3], null, null, Sign.X, false);
+        State state = new State(new PictureBox[3, 3], null, null, null, false);
         [Fact]
         public void CheckVertical_ShouldBeTrue()
         {

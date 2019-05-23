@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,20 +10,48 @@ namespace TicTacToe
 {
     public class State
     {
-        public Sign TurnPlayer { get; set; }
+        public Player TurnPlayer { get; set; }
         public bool GameOver { get; set; }
         public PictureBox[,] PictureBoxes { get; }
 
         public Sign [,] Map { get; set; }
 
         public Player[] Players { get; }
-        public State(PictureBox[,] pictureBoxes, Player[] players, Sign [,] map, Sign sign, bool gameover)
+
+        public struct Position
         {
-            TurnPlayer = sign;
+            public int PositionX;
+            public int PositionY;
+        }
+
+        public State(PictureBox[,] pictureBoxes, Player[] players, Sign [,] map, Player player, bool gameover)
+        {
+            TurnPlayer = player;
             GameOver = gameover;
             PictureBoxes = pictureBoxes;
             Players = players;
             Map = map;
+        }
+
+        public List<Position> GetFreePositions()
+        {
+            List<Position> freePositions = new List<Position>();
+            Position position;
+
+            for (int i = 0; i < Map.GetLength(0); i++)
+            {
+                for (int j = 0; j < Map.GetLength(1); j++)
+                {
+                    if (Map[i, j] == Sign.Nothing)
+                    {
+                        position = new Position();
+                        position.PositionX = i;
+                        position.PositionY = j;
+                        freePositions.Add(position);
+                    }
+                }
+            }
+            return freePositions;
         }
 
         public bool CheckHorizontal(Sign x)
@@ -76,38 +105,7 @@ namespace TicTacToe
 
         public bool CheckDiagonals(Sign sign)
         {
-            bool diagonal = false;
-            for (int i = 0; i < 3; i++)
-            {
-                if (Map[i, i].Equals(sign))
-                {
-                    diagonal = true;
-                }
-                else
-                {
-                    diagonal = false;
-                }
-            }
-            if (diagonal)
-            {
-                return true;
-            }
-            for (int i = 2, j = 0; i <= 0 && j < 3; i--, j++)
-            {
-                if (Map[i, j].Equals(sign))
-                {
-                    diagonal = true;
-                }
-                else
-                {
-                    diagonal = false;
-                }
-            }
-            if (diagonal)
-            {
-                return true;
-            }
-            return false;
+            return CheckTopLeftToBottomRightDiagonal(sign) || CheckBottomLeftToTopRightDiagonal(sign);
         }
 
         public bool CheckTopLeftToBottomRightDiagonal(Sign sign)

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TicTacToe.Properties;
+using static TicTacToe.State;
 
 namespace TicTacToe
 {
@@ -18,24 +19,13 @@ namespace TicTacToe
             _random = new Random();
         }
 
-        public void PlayRandom(PictureBox [,] pictures, Sign [,] map)
+        public void PlayRandom(PictureBox [,] pictures, Sign[,] map, List<Position> freePositions)
         {
             int randomX, randomY;
-            List<List<int>> freeSpaces = new List<List<int>>();
             PictureBox pictureBox = null;
 
-            for (int i = 0; i < map.GetLength(0); i++)
-            {
-                for (int j = 0; j < map.GetLength(1); j++)
-                {
-                    if (map[i, j] == Sign.Nothing)
-                    {
-                        freeSpaces.Add(new List<int>() { i, j });
-                    }
-                }
-            }
-            randomX = freeSpaces[_random.Next(freeSpaces.Count)][0];
-            randomY = freeSpaces[_random.Next(freeSpaces.Count)][1];
+            randomX = freePositions[_random.Next(freePositions.Count-1)].PositionX;
+            randomY = freePositions[_random.Next(freePositions.Count-1)].PositionY;
             pictureBox = pictures[randomX, randomY];
             Play(pictureBox, map, randomX, randomY);
         }

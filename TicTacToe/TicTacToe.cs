@@ -30,6 +30,9 @@ namespace TicTacToe
                 { Sign.Nothing, Sign.Nothing, Sign.Nothing},
                 { Sign.Nothing, Sign.Nothing, Sign.Nothing}
             };
+            TurnLabel.Text = "Choose Mode!";
+            //TurnLabel.DataBindings.Add(new Binding("Text", _game, "TurnText"));
+            _game.PropertyChanged += UpdateTurnLabel;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -105,6 +108,14 @@ namespace TicTacToe
         private void PlayerVsPlayerButton_Click(object sender, EventArgs e)
         {
             _game.InitializeGame(_pictureBoxes, _map, true, true);
+        }
+
+        public void UpdateTurnLabel(object sender, PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName == "TurnText")
+            {
+                TurnLabel.Text = _game.TurnText;
+            }
         }
     }
 }

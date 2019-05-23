@@ -19,14 +19,16 @@ namespace TicTacToe
             if (sign == Sign.X)
             {
                 _image = Resources.X;
+                _sign = sign;
             }
             else if (sign == Sign.O)
             {
                 _image = Resources.O;
-            }
-            if (sign != Sign.Nothing)
-            {
                 _sign = sign;
+            }
+            else
+            {
+                _sign = Sign.Nothing;
             }
         }
 
